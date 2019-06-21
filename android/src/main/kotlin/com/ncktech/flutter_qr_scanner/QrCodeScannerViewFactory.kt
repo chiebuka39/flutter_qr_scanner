@@ -55,8 +55,7 @@ class QrCodeScannerView(private val registrar: PluginRegistry.Registrar, id: Int
             override fun onActivityResumed(activity: Activity?) {
                 super.onActivityResumed(activity)
                 if (activity == registrar.activity()) {
-                    barcodeView?.setResultHandler(resultHandler)
-                    barcodeView?.startCamera(cameraId)
+                    restartScanner()
                 }
             }
         })
@@ -70,7 +69,7 @@ class QrCodeScannerView(private val registrar: PluginRegistry.Registrar, id: Int
         else
             Camera.CameraInfo.CAMERA_FACING_FRONT
 
-        barcodeView?.startCamera(cameraId)
+        restartScanner()
     }
 
     private fun flipFlash() {
@@ -99,8 +98,7 @@ class QrCodeScannerView(private val registrar: PluginRegistry.Registrar, id: Int
 
     override fun getView(): View {
         return initBarCodeView().apply {
-            this.setResultHandler(resultHandler)
-            this.startCamera(cameraId)
+            restartScanner()
         }
     }
 
@@ -124,6 +122,11 @@ class QrCodeScannerView(private val registrar: PluginRegistry.Registrar, id: Int
     private fun hasCameraPermission(): Boolean {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
                 activity.checkSelfPermission(Manifest.permission.CAMERA) == PERMISSION_GRANTED
+    }
+
+    private  fun restartScanner() {
+        barcodeView?.setResultHandler(resultHandler)
+        barcodeView?.startCamera(cameraId)
     }
 
 
