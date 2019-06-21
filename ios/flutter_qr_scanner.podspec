@@ -15,7 +15,7 @@ An internal Flutter plugin for scanning QR Codes.
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-
+  s.dependency 'MTBBarcodeScanner'
   s.ios.deployment_target = '8.0'
 end
 
