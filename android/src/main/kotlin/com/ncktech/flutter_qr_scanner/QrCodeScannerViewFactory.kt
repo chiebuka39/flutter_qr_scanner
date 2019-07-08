@@ -24,10 +24,20 @@ class QrCodeScannerViewFactory(private val registrar: PluginRegistry.Registrar) 
     override fun create(context: Context?, id: Int, obj: Any?): PlatformView {
         return QrCodeScannerView(registrar, id)
     }
+
 }
 
-class QrCodeScannerView(private val registrar: PluginRegistry.Registrar, id: Int) : PlatformView, MethodChannel
-.MethodCallHandler {
+class QrCodeScannerView(private val registrar: PluginRegistry.Registrar, id: Int) : PlatformView, MethodChannel.MethodCallHandler {
+    override fun onMethodCall(p0: MethodCall, p1: MethodChannel.Result) {
+        when (p0.method) {
+            "flipCamera" -> {
+                flipCamera()
+            }
+            "flipFlash" -> {
+                flipFlash()
+            }
+        }
+    }
 
     var barcodeView: ZXingScannerView? = null
     private val activity = registrar.activity()
@@ -107,16 +117,9 @@ class QrCodeScannerView(private val registrar: PluginRegistry.Registrar, id: Int
         barcodeView = null
     }
 
-    override fun onMethodCall(call: MethodCall?, result: MethodChannel.Result?) {
-        when (call?.method) {
-            "flipCamera" -> {
-                flipCamera()
-            }
-            "flipFlash" -> {
-                flipFlash()
-            }
-        }
-    }
+//    override fun onMethodCall(call: MethodCall?, result: MethodChannel.Result?) {
+//
+//    }
 
 
     private fun hasCameraPermission(): Boolean {
